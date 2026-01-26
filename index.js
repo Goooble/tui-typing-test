@@ -10,7 +10,11 @@ let user = "";
 let userDisplay = [];
 let index = 0;
 let sample =
-  "I think that by the time I turn sixty, I will probably be surrounded by children and grandchildren. I have visions of sitting out on a large verandah overlooking the immense garden. The garden would be a riot of colors, most of the plants having been planted by me.".toLowerCase();
+  "I think that by the time I turn sixty, I will probably be surrounded by children and grandchildren.";
+let startTime = Math.floor(process.uptime());
+let endTime = -1;
+let curTime = -1;
+let prevTime = -1;
 
 //stream handling
 const wstream = process.stdout;
@@ -24,17 +28,24 @@ rstream.on("data", (chunk) => {
   render();
 });
 
+wstream.write("\x1b[?25l");
+
 render();
+//frames
+setInterval(tick, 20);
+
 wstream.cursorTo(cursor.x, cursor.y);
 
 function render() {
+  wstream.write("\x1b[?25l");
   console.clear();
   console.log(process.title);
+  console.log(curTime);
   console.log("Sample text:");
   console.log(sample);
   //   console.log(userDisplay);
   cursor.x = 0;
-  cursor.y = 2;
+  cursor.y = 3;
   for (let i = 0; i < userDisplay.length; i++) {
     wstream.cursorTo(cursor.x, cursor.y);
     wstream.write(userDisplay[i]);
@@ -44,6 +55,7 @@ function render() {
       cursor.y++;
     }
   }
+  wstream.write("\x1b[?25h");
 }
 
 function handleInput(chunk) {
@@ -55,8 +67,7 @@ function handleInput(chunk) {
     // console.log(char);
     type(char);
   } else if (char == 0x7f) {
-    // backspace();
-    // console.log("bac");
+    backspace();
   } else if (char == 0x1b) {
     // do something
   }
@@ -74,4 +85,21 @@ function type(char) {
     // process.abort();
   }
   index++;
+}
+
+function backspace() {
+  index--;
+  userDisplay.pop();
+  user = user.split();
+  user.pop();
+  user = user.join("");
+  console.log(user);
+}
+
+function tick() {
+  curTime = Math.floor(process.uptime() - startTime);
+  if (prevTime < curTime) {
+    render();
+    prevTime = curTime;
+  }
 }
