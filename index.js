@@ -16,6 +16,10 @@ let endTime = -1;
 let curTime = -1;
 let prevTime = -1;
 
+let accuracy = 100;
+let wpm = 0;
+let errors = 0;
+
 //stream handling
 const wstream = process.stdout;
 const rstream = process.stdin;
@@ -40,7 +44,16 @@ function render() {
   wstream.write("\x1b[?25l");
   console.clear();
   console.log(process.title);
-  console.log(curTime);
+  console.log(
+    "time: " +
+      curTime +
+      "  speed: " +
+      wpm +
+      "wpm   accuracy: " +
+      accuracy +
+      "%    errors: " +
+      errors,
+  );
   console.log("Sample text:");
   console.log(sample);
   //   console.log(userDisplay);
@@ -55,6 +68,9 @@ function render() {
       cursor.y++;
     }
   }
+  //   wstream.cursorTo(0, 9);
+  //   console.log(user);
+  wstream.cursorTo(cursor.x, cursor.y);
   wstream.write("\x1b[?25h");
 }
 
@@ -69,30 +85,32 @@ function handleInput(chunk) {
   } else if (char == 0x7f) {
     backspace();
   } else if (char == 0x1b) {
-    // do something
+    process.exit();
   }
 }
 
 function type(char) {
-  //   console.log(char);
   char = String.fromCharCode(char);
   user += char;
   if (sample[index] == char) {
-    userDisplay.push("\x1b[32m" + char + "\x1b[0m");
-    // console.log(userDisplay);
+    userDisplay.push("\x1b[32m" + sample[index] + "\x1b[0m");
   } else {
-    userDisplay.push("\x1b[31m" + char + "\x1b[0m");
-    // process.abort();
+    userDisplay.push("\x1b[31m" + sample[index] + "\x1b[0m");
+    errors++;
   }
   index++;
 }
 
+function computeStats() {
+  accuracy = Math.floor(((user.length - errors) / user.length) * 100);
+  wpm = Math.floor((((user.length / 5) * 60) / curTime) * (accuracy / 100));
+}
+
 function backspace() {
   index--;
+  if (user[index] != sample[index]) errors--;
   userDisplay.pop();
-  user = user.split();
-  user.pop();
-  user = user.join("");
+  user = user.slice(0, -1);
   console.log(user);
 }
 
@@ -102,4 +120,5 @@ function tick() {
     render();
     prevTime = curTime;
   }
+  computeStats();
 }

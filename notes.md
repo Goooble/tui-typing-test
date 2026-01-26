@@ -7,3 +7,6 @@ hide the cursor while rendering
 setIntervals to simulate frames
 
 Only render on events, and what changes
+
+todos:
+backspace beyond 0 index
