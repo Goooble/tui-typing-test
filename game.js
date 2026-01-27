@@ -30,11 +30,12 @@ function master() {
     index++;
   }
   function backspace() {
-    index--;
-    if (userText[index] != testText[index]) errors--;
-    userDisplayText.pop();
-    userText = userText.slice(0, -1);
-    console.log(userText);
+    if (index > 0) {
+      index--;
+      if (userText[index] != testText[index]) errors--;
+      userDisplayText.pop();
+      userText = userText.slice(0, -1);
+    }
   }
   function computeStats() {
     accuracy = Math.floor(((userText.length - errors) / userText.length) * 100);
