@@ -1,8 +1,7 @@
 import { log } from "./main.js";
 
 function master() {
-  let testText =
-    "I think that by the time I turn sixty, I will probably be surrounded by children and grandchildren.";
+  let testText = "I think that by the";
   let userText = "";
   let userDisplayText = [];
   let index = 0;
@@ -71,6 +70,14 @@ function master() {
   function getGameState() {
     return { isMenu, isGameOver };
   }
+  function startGame() {
+    isMenu = false;
+  }
+  function checkGameOver() {
+    if (userText.length == testText) {
+      isGameOver = true;
+    }
+  }
   return {
     getTextState,
     getTime,
@@ -80,6 +87,8 @@ function master() {
     computeStats,
     backspace,
     tick,
+    startGame,
+    checkGameOver,
   };
 }
 

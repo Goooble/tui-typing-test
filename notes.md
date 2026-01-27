@@ -10,4 +10,9 @@
 
 todos:
 
+- multiple testTexts
 - backspace beyond 0 index
+- hecker terminal
+- Menu
+- game over
+- display final stats

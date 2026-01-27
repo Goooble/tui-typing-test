@@ -17,16 +17,47 @@ function horCenter(length) {
   return coordinate;
 }
 
-function header() {
-  wstream.cursorTo(horCenter(process.title.length), 0);
+function headerScreen(x, y) {
+  wstream.cursorTo(horCenter(process.title.length), y);
   wstream.write("\x1b[1;4;36m" + process.title + "\x1b[0m");
 }
-function startScreen() {
+function startScreen(x, y) {
   let string = "Press Enter to start the test:";
-  wstream.cursorTo(horCenter(string.length), 1);
+  wstream.cursorTo(horCenter(string.length), y);
   wstream.write("\x1b[5mPress Enter to start the test: \x1b[0m");
 }
-function menu() {}
+
+function statsScreen(x, y, isGameOver) {
+  let string =
+    "time: " +
+    game.getTime().curTime +
+    "  speed: " +
+    game.getStats().wpm +
+    "wpm   accuracy: " +
+    game.getStats().accuracy +
+    "%    errors: " +
+    game.getStats().errors;
+  wstream.cursorTo(horCenter(string.length), y);
+  wstream.write("\x1b[93m" + string + "\x1b[0m");
+}
+
+function gameScreen(x, y) {
+  cursor.x = x;
+  cursor.y = y;
+  wstream.cursorTo(cursor.x, cursor.y);
+  wstream.write(game.getTextState().testText);
+
+  for (let i = 0; i < game.getTextState().userDisplayText.length; i++) {
+    wstream.cursorTo(cursor.x, cursor.y);
+    wstream.write(game.getTextState().userDisplayText[i]);
+    cursor.x++;
+    if (cursor.x == cols) {
+      cursor.x = 0;
+      cursor.y++;
+    }
+  }
+  wstream.cursorTo(cursor.x, cursor.y);
+}
 
 // function render() {
 //   wstream.write("\x1b[?25l");
@@ -65,9 +96,15 @@ function render() {
   wstream.write("\x1b[?25l");
   console.clear();
 
-  header();
+  headerScreen(0, 0);
   if (game.getGameState().isMenu) {
-    startScreen();
+    startScreen(0, 1);
+  } else if (game.getGameState().isGameOver === false) {
+    statsScreen(0, 2, false);
+    gameScreen(0, 4);
+  } else {
+    statsScreen(0, 6, true);
+    startScreen(0, 7);
   }
 
   wstream.write("\x1b[?25h");

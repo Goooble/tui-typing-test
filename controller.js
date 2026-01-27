@@ -24,11 +24,16 @@ function handleInput(chunk) {
   }
   if (char >= 32 && char <= 126) {
     // console.log(char);
-    game.type(char);
+    if (!game.getGameState().isGameOver) {
+      game.type(char);
+      game.checkGameOver();
+    }
   } else if (char == 0x7f) {
-    game.backspace();
+    if (!game.getGameState().isGameOver) game.backspace();
   } else if (char == 0x1b) {
     process.exit(); //todo
+  } else if (char == 13) {
+    if (!game.getGameState().isGameOver) game.startGame();
   }
 }
 
