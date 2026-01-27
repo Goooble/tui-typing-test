@@ -24,7 +24,11 @@ function master() {
     if (testText[index] == char) {
       userDisplayText.push("\x1b[32m" + testText[index] + "\x1b[0m");
     } else {
-      userDisplayText.push("\x1b[31m" + testText[index] + "\x1b[0m");
+      let string =
+        testText[index] == " "
+          ? "\x1b[41m" + testText[index] + "\x1b[0m"
+          : "\x1b[31m" + testText[index] + "\x1b[0m";
+      userDisplayText.push(string);
       errors++;
     }
     index++;
