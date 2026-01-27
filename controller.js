@@ -33,7 +33,7 @@ function handleInput(chunk) {
   } else if (char == 0x1b) {
     process.exit(); //todo
   } else if (char == 13) {
-    if (!game.getGameState().isGameOver) game.startGame();
+    if (game.getGameState().isGameOver) game.startGame();
   }
 }
 

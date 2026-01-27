@@ -12,10 +12,11 @@ function master() {
 
   let accuracy = 100;
   let wpm = 0;
+  let prevWPM = -1;
   let errors = 0;
 
   let isMenu = true;
-  let isGameOver = false;
+  let isGameOver = true;
 
   function type(char) {
     char = String.fromCharCode(char);
@@ -49,11 +50,11 @@ function master() {
       change = true;
       prevTime = curTime;
     }
-    computeStats(); //todo
+    computeStats();
     return change;
   }
   function getStats() {
-    return { accuracy, wpm, errors };
+    return { accuracy, wpm, errors, prevWPM };
   }
   function getTime() {
     return {
@@ -72,10 +73,19 @@ function master() {
   }
   function startGame() {
     isMenu = false;
+    isGameOver = false;
+    startTime = Math.floor(process.uptime());
+    prevTime = -1;
+    curTime = -1;
+    index = 0;
+    userText = "";
+    userDisplayText = [];
   }
   function checkGameOver() {
-    if (userText.length == testText) {
+    if (userText.length == testText.length) {
       isGameOver = true;
+      endTime = curTime;
+      prevWPM = wpm;
     }
   }
   return {

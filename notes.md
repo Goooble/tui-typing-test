@@ -16,3 +16,4 @@ todos:
 - Menu
 - game over
 - display final stats
+- disable enter during text

@@ -28,11 +28,21 @@ function startScreen(x, y) {
 }
 
 function statsScreen(x, y, isGameOver) {
+  let time;
+  let wpm;
+  if (isGameOver) {
+    time = game.getTime().endTime;
+    wpm = game.getStats().prevWPM;
+  } else {
+    time = game.getTime().curTime;
+    wpm = game.getStats().wpm;
+  }
   let string =
     "time: " +
-    game.getTime().curTime +
+    time +
+    " seconds" +
     "  speed: " +
-    game.getStats().wpm +
+    wpm +
     "wpm   accuracy: " +
     game.getStats().accuracy +
     "%    errors: " +
@@ -103,8 +113,9 @@ function render() {
     statsScreen(0, 2, false);
     gameScreen(0, 4);
   } else {
-    statsScreen(0, 6, true);
-    startScreen(0, 7);
+    statsScreen(0, 2, true);
+    gameScreen(0, 4);
+    startScreen(0, 6);
   }
 
   wstream.write("\x1b[?25h");
