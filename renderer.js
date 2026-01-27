@@ -57,9 +57,34 @@ function statsScreen(x, y, isGameOver) {
 function gameScreen(x, y) {
   cursor.x = x;
   cursor.y = y;
-  wstream.cursorTo(cursor.x, cursor.y);
-  wstream.write(game.getTextState().testText);
+  let textArray = game.getTextState().testText.split(" ");
+  let spaceWidth = 0,
+    lineWidth = 0,
+    wordWidth = 0;
+  for (let i = 0; i < textArray.length; i++) {
+    wordWidth = textArray[i].length;
+    if (lineWidth + wordWidth > cols) {
+      cursor.x = 0;
+      cursor.y++;
+      lineWidth = 0;
+      spaceWidth = 0;
+    }
 
+    for (let j = 0; j < textArray[i].length; j++) {
+      wstream.cursorTo(cursor.x, cursor.y);
+      wstream.write(textArray[i][j]);
+      cursor.x++;
+      lineWidth++;
+    }
+    wstream.cursorTo(cursor.x, cursor.y);
+    wstream.write(" ");
+    lineWidth++;
+    cursor.x++;
+  }
+
+  //   wstream.write(game.getTextState().testText);
+  cursor.x = 0;
+  cursor.y = y;
   for (let i = 0; i < game.getTextState().userDisplayText.length; i++) {
     wstream.cursorTo(cursor.x, cursor.y);
     wstream.write(game.getTextState().userDisplayText[i]);
@@ -72,39 +97,6 @@ function gameScreen(x, y) {
   wstream.cursorTo(cursor.x, cursor.y);
 }
 
-// function render() {
-//   wstream.write("\x1b[?25l");
-//   console.clear();
-//   console.log(process.title);
-//   console.log(
-//     "time: " +
-//       game.getTime().curTime +
-//       "  speed: " +
-//       game.getStats().wpm +
-//       "wpm   accuracy: " +
-//       game.getStats().accuracy +
-//       "%    errors: " +
-//       game.getStats().errors,
-//   );
-//   console.log("Sample text:");
-//   console.log(game.getTextState().testText);
-//   //   console.log(userDisplay);
-//   cursor.x = 0;
-//   cursor.y = 3;
-//   for (let i = 0; i < game.getTextState().userDisplayText.length; i++) {
-//     wstream.cursorTo(cursor.x, cursor.y);
-//     wstream.write(game.getTextState().userDisplayText[i]);
-//     cursor.x++;
-//     if (cursor.x == cols) {
-//       cursor.x = 0;
-//       cursor.y++;
-//     }
-//   }
-//   //   wstream.cursorTo(0, 9);
-//   //   console.log(user);
-//   wstream.cursorTo(cursor.x, cursor.y);
-//   wstream.write("\x1b[?25h");
-// }
 function render() {
   wstream.write("\x1b[?25l");
   console.clear();
