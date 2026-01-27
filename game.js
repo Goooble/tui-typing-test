@@ -1,7 +1,7 @@
 import { log } from "./main.js";
 
 function master() {
-  let testText = "I think that by the";
+  let testText = `Speed typing is a skill built through repetition, patience, and discipline. At first, accuracy should matter more than raw speed. As mistakes decrease, speed naturally increases over time. Consistency matters more than long practice sessions.`;
   let userText = "";
   let userDisplayText = [];
   let index = 0;

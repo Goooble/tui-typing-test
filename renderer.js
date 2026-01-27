@@ -6,10 +6,13 @@ const wstream = process.stdout;
 const rstream = process.stdin;
 rstream.setRawMode(true);
 rstream.resume();
-
+wstream.on("resize", () => {
+  cols = wstream.columns;
+  rows = wstream.rows;
+});
 //state
-const cols = process.stdout.columns;
-const rows = process.stdout.rows; //wonder what happens when rows exceed the screen
+let cols = process.stdout.columns;
+let rows = process.stdout.rows; //wonder what happens when rows exceed the screen
 const cursor = { x: 0, y: 2 };
 
 function horCenter(length) {
