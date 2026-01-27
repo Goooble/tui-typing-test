@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/Goooble/cli-typing-test#readme",
   "dependencies": {
-    "blessed": "^0.1.81",
     "dotenv": "^17.2.3"
   }
 }

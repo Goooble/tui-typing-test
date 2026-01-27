@@ -12,3 +12,4 @@ todos:
 
 - multiple testTexts
 - text wrapping
+- space wrong highlighting

@@ -57,44 +57,56 @@ function statsScreen(x, y, isGameOver) {
 function gameScreen(x, y) {
   cursor.x = x;
   cursor.y = y;
+  const cursorLocations = [];
+  let text = game.getTextState().testText;
   let textArray = game.getTextState().testText.split(" ");
-  let spaceWidth = 0,
-    lineWidth = 0,
+
+  let lineWidth = 0,
     wordWidth = 0;
+
   for (let i = 0; i < textArray.length; i++) {
     wordWidth = textArray[i].length;
-    if (lineWidth + wordWidth > cols) {
+    if (lineWidth + wordWidth + 1 > cols) {
       cursor.x = 0;
       cursor.y++;
       lineWidth = 0;
-      spaceWidth = 0;
     }
 
     for (let j = 0; j < textArray[i].length; j++) {
+      cursorLocations.push([cursor.x, cursor.y]);
       wstream.cursorTo(cursor.x, cursor.y);
       wstream.write(textArray[i][j]);
       cursor.x++;
       lineWidth++;
     }
+    cursorLocations.push([cursor.x, cursor.y]);
     wstream.cursorTo(cursor.x, cursor.y);
     wstream.write(" ");
     lineWidth++;
     cursor.x++;
   }
-
-  //   wstream.write(game.getTextState().testText);
+  //   log(cursorLocations);
+  //wrapping user entered text
   cursor.x = 0;
   cursor.y = y;
-  for (let i = 0; i < game.getTextState().userDisplayText.length; i++) {
+  let i = 0;
+  for (i = 0; i < game.getTextState().userDisplayText.length; i++) {
+    // log(game.getTextState().userText);
+    cursor.x = cursorLocations[i][0];
+    cursor.y = cursorLocations[i][1];
     wstream.cursorTo(cursor.x, cursor.y);
     wstream.write(game.getTextState().userDisplayText[i]);
-    cursor.x++;
-    if (cursor.x == cols) {
-      cursor.x = 0;
-      cursor.y++;
-    }
   }
-  wstream.cursorTo(cursor.x, cursor.y);
+  log(cursorLocations[i][1]);
+  if (cursorLocations[i][1] > cursor.y) {
+    cursor.x = 0;
+    cursor.y++;
+  }
+  let cursorx = cursor.x;
+  if (cursor.x != 0) {
+    cursorx++;
+  }
+  wstream.cursorTo(cursorx, cursor.y);
 }
 
 function render() {
