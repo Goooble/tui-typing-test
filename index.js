@@ -101,11 +101,6 @@ function type(char) {
   index++;
 }
 
-function computeStats() {
-  accuracy = Math.floor(((user.length - errors) / user.length) * 100);
-  wpm = Math.floor((((user.length / 5) * 60) / curTime) * (accuracy / 100));
-}
-
 function backspace() {
   index--;
   if (user[index] != sample[index]) errors--;
