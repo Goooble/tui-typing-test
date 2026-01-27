@@ -80,6 +80,7 @@ function master() {
     index = 0;
     userText = "";
     userDisplayText = [];
+    errors = 0;
   }
   function checkGameOver() {
     if (userText.length == testText.length) {
