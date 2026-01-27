@@ -15,6 +15,9 @@ function master() {
   let wpm = 0;
   let errors = 0;
 
+  let isMenu = true;
+  let isGameOver = false;
+
   function type(char) {
     char = String.fromCharCode(char);
     userText += char;
@@ -65,10 +68,14 @@ function master() {
     return { testText, userText, userDisplayText, index };
   }
 
+  function getGameState() {
+    return { isMenu, isGameOver };
+  }
   return {
     getTextState,
     getTime,
     getStats,
+    getGameState,
     type,
     computeStats,
     backspace,
