@@ -1,7 +1,11 @@
 import { log } from "./main.js";
+import textDB from "./textDB.js";
+function selectText() {
+  return textDB[Math.floor(Math.random() * textDB.length)];
+}
 
 function master() {
-  let testText = `Speed typing is a skill built through repetition, patience, and discipline. At first, accuracy should matter more than raw speed. As mistakes decrease, speed naturally increases over time. Consistency matters more than long practice sessions.`;
+  let testText = selectText();
   let userText = "";
   let userDisplayText = [];
   let index = 0;
@@ -86,6 +90,7 @@ function master() {
     userText = "";
     userDisplayText = [];
     errors = 0;
+    testText = selectText();
   }
   function checkGameOver() {
     if (userText.length == testText.length) {
