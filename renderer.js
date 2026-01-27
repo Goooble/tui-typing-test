@@ -107,8 +107,9 @@ function gameScreen(x, y) {
     cursorx++;
   }
   wstream.cursorTo(cursorx, cursor.y);
+  lines = cursor.y;
 }
-
+let lines; //to dsiplay startscreen after all the testtext
 function render() {
   wstream.write("\x1b[?25l");
   console.clear();
@@ -122,7 +123,7 @@ function render() {
   } else {
     statsScreen(0, 2, true);
     gameScreen(0, 4);
-    startScreen(0, 6);
+    startScreen(0, lines + 2);
   }
 
   wstream.write("\x1b[?25h");
