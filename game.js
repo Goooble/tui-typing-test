@@ -5,23 +5,27 @@ function selectText() {
 }
 
 function master() {
+  //text
   let testText = selectText();
   let userText = "";
   let userDisplayText = [];
   let index = 0;
+  //time
   let startTime = Math.floor(process.uptime());
   let endTime = -1;
   let curTime = -1;
   let prevTime = -1;
-
+  //stats
   let accuracy = 100;
   let wpm = 0;
   let prevWPM = -1;
   let errors = 0;
 
+  //game state
   let isMenu = true;
   let isGameOver = true;
 
+  //typing
   function type(char) {
     char = String.fromCharCode(char);
     userText += char;
@@ -45,13 +49,6 @@ function master() {
       userText = userText.slice(0, -1);
     }
   }
-  function computeStats() {
-    accuracy = Math.floor(((userText.length - errors) / userText.length) * 100);
-    wpm = Math.floor(
-      (((userText.length / 5) * 60) / curTime) * (accuracy / 100),
-    );
-    // log(accuracy);
-  }
   function tick() {
     let change = false;
     curTime = Math.floor(process.uptime() - startTime);
@@ -62,6 +59,13 @@ function master() {
     computeStats();
     return change;
   }
+  function computeStats() {
+    accuracy = Math.floor(((userText.length - errors) / userText.length) * 100);
+    wpm = Math.floor(
+      (((userText.length / 5) * 60) / curTime) * (accuracy / 100),
+    );
+  }
+
   function getStats() {
     return { accuracy, wpm, errors, prevWPM };
   }
@@ -80,6 +84,7 @@ function master() {
   function getGameState() {
     return { isMenu, isGameOver };
   }
+  //resets all the stats and stuff for a new game
   function startGame() {
     isMenu = false;
     isGameOver = false;

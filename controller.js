@@ -2,7 +2,6 @@ import { rstream } from "./renderer.js";
 import game from "./game.js";
 import { render } from "./renderer.js";
 import fs from "node:fs";
-import { EOF } from "node:dns";
 import { log } from "./main.js";
 
 //events
@@ -13,7 +12,6 @@ rstream.on("data", (chunk) => {
 setInterval(() => {
   if (game.tick()) {
     render();
-    // log("rendering");
   }
 }, 20);
 
@@ -23,7 +21,6 @@ function handleInput(chunk) {
     char = chunk[0];
   }
   if (char >= 32 && char <= 126) {
-    // console.log(char);
     if (!game.getGameState().isGameOver) {
       game.type(char);
       game.checkGameOver();

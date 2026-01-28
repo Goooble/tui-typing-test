@@ -3,6 +3,7 @@ import { render } from "./renderer.js";
 import fs from "node:fs";
 import controller from "./controller.js"; //random export to run the file
 
+console.clear();
 const logPath = "./log.txt";
 process.title = "Typing Test";
 fs.writeFile(logPath, "", (e) => {
