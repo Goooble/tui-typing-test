@@ -9,6 +9,7 @@ rstream.resume();
 wstream.on("resize", () => {
   cols = wstream.columns;
   rows = wstream.rows;
+  render();
 });
 //state
 let cols = process.stdout.columns;
@@ -18,6 +19,7 @@ let frame = "";
 //function to find the center starting coordinate
 function horCenter(length) {
   let coordinate = Math.floor(cols / 2 - length / 2);
+  if (coordinate < 0) return 0;
   return coordinate;
 }
 
@@ -31,7 +33,7 @@ function headerScreen(x, y) {
   x = horCenter(process.title.length);
   // wstream.cursorTo(x, y);
   frame += `${ansiCursor(x, y)}\x1b[1;4;36m${process.title}\x1b[0m`;
-  log(y);
+  // log(y);
   // wstream.write("\x1b[1;4;36m" + process.title + "\x1b[0m");
 }
 function startScreen(x, y) {
@@ -39,6 +41,7 @@ function startScreen(x, y) {
   x = horCenter(string.length);
   // wstream.cursorTo(x, y);
   frame += `${ansiCursor(x, y)}\x1b[5m${string}\x1b[0m`;
+  log(x + " " + y);
   // log(y);
   // wstream.write("\x1b[5mPress Enter to start the test: \x1b[0m");
 }
@@ -149,28 +152,10 @@ function render() {
     startScreen(0, lines + 2);
   }
   wstream.write(frame);
-  log(frame);
+  // log(frame);
   frame = "";
 
   wstream.write("\x1b[?25h");
 }
-// function render() {
-//   wstream.write("\x1b[?25l");
-//   console.clear();
-
-//   headerScreen(0, 0);
-//   if (game.getGameState().isMenu) {
-//     startScreen(0, 1);
-//   } else if (game.getGameState().isGameOver === false) {
-//     statsScreen(0, 2, false);
-//     gameScreen(0, 4);
-//   } else {
-//     statsScreen(0, 2, true);
-//     gameScreen(0, 4);
-//     startScreen(0, lines + 2);
-//   }
-
-//   wstream.write("\x1b[?25h");
-// }
 
 export { rstream, wstream, render };
