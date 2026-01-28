@@ -174,14 +174,14 @@ function generateFrame() {
 }
 
 function render() {
-  // wstream.write("\x1b[?25l");
+  wstream.write("\x1b[?25l");
   fillBuffer();
   bufferDiff();
   generateFrame();
   wstream.write(frame);
   wstream.cursorTo(cursor.x, cursor.y);
   frame = "";
-  // wstream.write("\x1b[?25h");
+  wstream.write("\x1b[?25h");
 }
 
 export { rstream, wstream, render };
