@@ -26,6 +26,14 @@ differential redraw
 - row major (x,y are flipped)
 - 1 - indexed
 
+## Scrolling
+
+TUI's usually disable internal scrolling and implement it themseves
+
+- All content view
+- viewport content
+- buffer - gets displayed
+
 ## todos:
 
 - screen flickering

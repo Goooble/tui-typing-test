@@ -1,3 +1,4 @@
+import { create } from "node:domain";
 import game from "./game.js";
 import { log } from "./main.js";
 
@@ -9,13 +10,25 @@ rstream.resume();
 wstream.on("resize", () => {
   cols = wstream.columns;
   rows = wstream.rows;
+  buffer = createBuffer(rows, cols);
+  renderedBuffer = createBuffer(rows, cols);
+  //fill buffer
   render();
 });
+
 //state
 let cols = process.stdout.columns;
 let rows = process.stdout.rows; //wonder what happens when rows exceed the screen
 const cursor = { x: 0, y: 2 };
+function createBuffer(rows, cols) {
+  return Array.from(new Array(rows), (x) => {
+    return new Array(cols).fill(" ");
+  });
+}
+let buffer = createBuffer(rows, cols);
+let renderedBuffer = createBuffer(rows, cols);
 let frame = "";
+
 //function to find the center starting coordinate
 function horCenter(length) {
   let coordinate = Math.floor(cols / 2 - length / 2);
@@ -31,19 +44,17 @@ function ansiCursor(x, y) {
 //UI
 function headerScreen(x, y) {
   x = horCenter(process.title.length);
-  // wstream.cursorTo(x, y);
-  frame += `${ansiCursor(x, y)}\x1b[1;4;36m${process.title}\x1b[0m`;
-  // log(y);
-  // wstream.write("\x1b[1;4;36m" + process.title + "\x1b[0m");
+  let string = process.title;
+  for (let i = 0; i < string.length; i++) {
+    buffer[y][x + i] = `\x1b[1;4;36m${string[i]}\x1b[0m`;
+  }
 }
 function startScreen(x, y) {
   let string = "Press Enter to start the test:";
   x = horCenter(string.length);
-  // wstream.cursorTo(x, y);
-  frame += `${ansiCursor(x, y)}\x1b[5m${string}\x1b[0m`;
-  log(x + " " + y);
-  // log(y);
-  // wstream.write("\x1b[5mPress Enter to start the test: \x1b[0m");
+  for (let i = 0; i < string.length; i++) {
+    buffer[y][x + i] = `\x1b[5m${string[i]}\x1b[0m`;
+  }
 }
 
 function statsScreen(x, y, isGameOver) {
@@ -67,10 +78,9 @@ function statsScreen(x, y, isGameOver) {
     "%    errors: " +
     game.getStats().errors;
   x = horCenter(string.length);
-  // wstream.cursorTo(x, y);
-  frame += `${ansiCursor(x, y)}\x1b[93m${string}\x1b[0m`;
-
-  // wstream.write("\x1b[93m" + string + "\x1b[0m");
+  for (let i = 0; i < string.length; i++) {
+    buffer[y][x + i] = `\x1b[93m${string[i]}\x1b[0m`;
+  }
 }
 
 function gameScreen(x, y) {
@@ -95,20 +105,17 @@ function gameScreen(x, y) {
     //render each character
     for (let j = 0; j < textArray[i].length; j++) {
       cursorLocations.push([cursor.x, cursor.y]);
-      frame += ansiCursor(cursor.x, cursor.y) + textArray[i][j];
-      // wstream.cursorTo(cursor.x, cursor.y);
-      // wstream.write(textArray[i][j]);
+      buffer[cursor.y][cursor.x] = textArray[i][j];
       cursor.x++;
       lineWidth++;
     }
     //render space
     cursorLocations.push([cursor.x, cursor.y]);
-    frame += ansiCursor(cursor.x, cursor.y) + " ";
-    // wstream.cursorTo(cursor.x, cursor.y);
-    // wstream.write(" ");
+    buffer[cursor.y][cursor.x] = " ";
     lineWidth++;
     cursor.x++;
   }
+  wstream.cursorTo(x, y);
 
   //wrapping user entered text
   cursor.x = 0;
@@ -117,10 +124,7 @@ function gameScreen(x, y) {
   for (i = 0; i < game.getTextState().userDisplayText.length; i++) {
     cursor.x = cursorLocations[i][0];
     cursor.y = cursorLocations[i][1];
-    frame +=
-      ansiCursor(cursor.x, cursor.y) + game.getTextState().userDisplayText[i];
-    // wstream.cursorTo(cursor.x, cursor.y);
-    // wstream.write(game.getTextState().userDisplayText[i]);
+    buffer[cursor.y][cursor.x] = game.getTextState().userDisplayText[i];
   }
   //to move cursor to the next line after the render
   if (cursorLocations[i][1] > cursor.y) {
@@ -137,9 +141,7 @@ function gameScreen(x, y) {
 }
 let lines; //to dsiplay startscreen after all the testtext
 
-function render() {
-  wstream.write("\x1b[?25l");
-  console.clear();
+function fillBuffer() {
   headerScreen(0, 0);
   if (game.getGameState().isMenu) {
     startScreen(0, 1);
@@ -151,10 +153,23 @@ function render() {
     gameScreen(0, 4);
     startScreen(0, lines + 2);
   }
-  wstream.write(frame);
-  // log(frame);
-  frame = "";
+}
 
+function generateFrame() {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      frame += ansiCursor(j, i) + buffer[i][j];
+    }
+  }
+}
+
+function render() {
+  wstream.write("\x1b[?25l");
+  console.clear();
+  fillBuffer();
+  generateFrame();
+  wstream.write(frame);
+  frame = "";
   wstream.write("\x1b[?25h");
 }
 
