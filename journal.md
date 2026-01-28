@@ -35,4 +35,4 @@ I didnt know i could reduce flickering to zero!
 
 ## Side notes
 
-I feel a growing need to add a text rendering function I swear to god, i am tired of refactoring 4 functions each time i add an improvement to the rendering
+I feel a growing need to add a text rendering function I swear to god, i am tired of refactoring 4 functions each time i add an improvement to the rendering. OMG i am stupid as hell, fixing the cursor was so easy if i had just used cursorlocations lol, why did i not think of that until now. I am dumbo dumbo

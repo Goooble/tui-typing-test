@@ -28,7 +28,11 @@ function handleInput(chunk) {
   } else if (char == 0x7f) {
     if (!game.getGameState().isGameOver) game.backspace();
   } else if (char == 0x1b) {
-    process.exit(); //todo
+    if (game.getGameState().isGameOver) {
+      console.clear();
+      process.exit();
+    }
+    game.stopGame();
   } else if (char == 13) {
     if (game.getGameState().isGameOver) game.startGame();
   }

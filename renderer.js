@@ -12,7 +12,6 @@ wstream.on("resize", () => {
   rows = wstream.rows;
   buffer = createBuffer(rows, cols);
   renderedBuffer = createBuffer(rows, cols);
-  //fill buffer
   render();
 });
 
@@ -125,6 +124,7 @@ function gameScreen(x, y) {
     lineWidth++;
     cursor.x++;
   }
+  lines = cursor.y;
 
   //wrapping user entered text
   cursor.x = 0;
@@ -137,7 +137,6 @@ function gameScreen(x, y) {
   }
   cursor.x = cursorLocations[i][0];
   cursor.y = cursorLocations[i][1];
-  lines = cursor.y;
 }
 let lines; //to dsiplay startscreen after all the testtext
 

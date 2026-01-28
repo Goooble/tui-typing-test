@@ -104,6 +104,11 @@ function master() {
       prevWPM = wpm;
     }
   }
+  function stopGame() {
+    isGameOver = true;
+    endTime = curTime;
+    prevWPM = wpm;
+  }
   return {
     getTextState,
     getTime,
@@ -115,6 +120,7 @@ function master() {
     tick,
     startGame,
     checkGameOver,
+    stopGame,
   };
 }
 

@@ -36,7 +36,6 @@ TUI's usually disable internal scrolling and implement it themseves
 
 ## todos:
 
-- screen flickering
 - reset shortcut
 - redo text
 - esc to menu
