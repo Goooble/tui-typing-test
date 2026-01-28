@@ -31,3 +31,7 @@ OH MY GOD, It was like solving a LeetCode problem damnit. So many bugs, so many 
 
 Flickering, insane flickering. Because clearing and writing individually each character takes too much time and causes heavy flickering.
 Figured out you need to keep a frame/buffer and then write to it and then write the entire frame to the terminal. It reduced flickering by a lot, but theres more i can do i think. Differential rendering to the rescue, i will do grid based for the least flickering.
+
+## Side notes
+
+I feel a growing need to add a text rendering function I swear to god, i am tired of refactoring 4 functions each time i add an improvement to the rendering

@@ -155,18 +155,30 @@ function fillBuffer() {
   }
 }
 
-function generateFrame() {
+function bufferDiff() {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      frame += ansiCursor(j, i) + buffer[i][j];
+      if (renderedBuffer[i][j] != buffer[i][j]) {
+        renderedBuffer[i][j] = buffer[i][j];
+      }
     }
   }
 }
 
+function generateFrame() {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      frame += ansiCursor(j, i) + renderedBuffer[i][j];
+    }
+  }
+  buffer = createBuffer(rows, cols);
+}
+
 function render() {
   wstream.write("\x1b[?25l");
-  console.clear();
+  // console.clear();
   fillBuffer();
+  bufferDiff();
   generateFrame();
   wstream.write(frame);
   frame = "";
