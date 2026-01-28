@@ -52,7 +52,7 @@ function headerScreen(x, y) {
   cursor.y = y;
 }
 function startScreen(x, y) {
-  let string = "Press Enter to start the test:";
+  let string = "ENTER to start : TAB to restart";
   x = horCenter(string.length);
   let i;
   for (i = 0; i < string.length; i++) {

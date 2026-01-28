@@ -1,12 +1,17 @@
 import { log } from "./main.js";
-import textDB from "./textDB.js";
+import words from "./words.js";
 function selectText() {
-  return textDB[Math.floor(Math.random() * textDB.length)];
+  let text = [];
+  for (let i = 0; i < 30; i++) {
+    text.push(words[Math.floor(Math.random() * words.length)]);
+  }
+  return text.join(" ");
 }
 
 function master() {
   //text
   let testText = selectText();
+  let currText = testText;
   let userText = "";
   let userDisplayText = [];
   let index = 0;
@@ -85,7 +90,7 @@ function master() {
     return { isMenu, isGameOver };
   }
   //resets all the stats and stuff for a new game
-  function startGame() {
+  function startGame(redo) {
     isMenu = false;
     isGameOver = false;
     startTime = Math.floor(process.uptime());
@@ -95,7 +100,10 @@ function master() {
     userText = "";
     userDisplayText = [];
     errors = 0;
-    testText = selectText();
+    if (redo) {
+      testText = currText;
+    } else testText = selectText();
+    currText = testText;
   }
   function checkGameOver() {
     if (userText.length == testText.length) {

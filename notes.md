@@ -37,7 +37,4 @@ TUI's usually disable internal scrolling and implement it themseves
 ## todos:
 
 - reset shortcut
-- redo text
-- esc to menu
-- esc again to exit
 - find more text

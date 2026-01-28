@@ -34,7 +34,9 @@ function handleInput(chunk) {
     }
     game.stopGame();
   } else if (char == 13) {
-    if (game.getGameState().isGameOver) game.startGame();
+    if (game.getGameState().isGameOver) game.startGame(false);
+  } else if (char == 9) {
+    game.startGame(true);
   }
 }
 
