@@ -3,21 +3,18 @@
   "type": "module",
   "version": "1.0.0",
   "description": "A Node.js terminal typing test that uses a text-based user interface (TUI) to provide real-time feedback, speed (WPM), and accuracy tracking. Designed as a learning project to understand raw keyboard input, state-driven rendering, and event-based terminal UIs.",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Goooble/cli-typing-test.git"
+    "url": "git+https://github.com/Goooble/tui-typing-test.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Goooble/cli-typing-test/issues"
+    "url": "https://github.com/Goooble/tui-typing-test/issues"
   },
-  "homepage": "https://github.com/Goooble/cli-typing-test#readme",
-  "dependencies": {
-    "dotenv": "^17.2.3"
-  }
+  "homepage": "https://github.com/Goooble/tui-typing-test#readme"
 }

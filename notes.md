@@ -35,6 +35,3 @@ TUI's usually disable internal scrolling and implement it themseves
 - buffer - gets displayed
 
 ## todos:
-
-- reset shortcut
-- find more text

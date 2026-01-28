@@ -33,6 +33,10 @@ Flickering, insane flickering. Because clearing and writing individually each ch
 Figured out you need to keep a frame/buffer and then write to it and then write the entire frame to the terminal. It reduced flickering by a lot, but theres more i can do i think. Differential rendering to the rescue, i will do grid based for the least flickering. OMG literally zero flickering after grid differential rendering. THIS IS SO GOOD
 I didnt know i could reduce flickering to zero!
 
+# Testing Text
+
+I wanted proper sentences like nitrotype has with a little punctuation and stuff. I tried getting text from alice in the wonderland and making that work but normalizing the text with all the white spaces and all just didnt sit right or maybe i just realized it was very doable and i just had to place a trim() in the right place and would have solved that issue. But that I did with of Chatgpt anyways so it didnt feel right either way. It once again reinforced the idea that I hate data processing stuff. So i just settled with text generation like monkey type does.
+
 ## Side notes
 
 I feel a growing need to add a text rendering function I swear to god, i am tired of refactoring 4 functions each time i add an improvement to the rendering. OMG i am stupid as hell, fixing the cursor was so easy if i had just used cursorlocations lol, why did i not think of that until now. I am dumbo dumbo

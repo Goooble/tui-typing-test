@@ -8,7 +8,6 @@ stream.on("data", (chunk) => {
   text += chunk;
 });
 
-let size = 120;
 stream.on("end", () => {
   fs.writeFile(
     "words.js",
