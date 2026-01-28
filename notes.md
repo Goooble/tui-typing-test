@@ -33,4 +33,4 @@ differential redraw
 - redo text
 - esc to menu
 - esc again to exit
-- comments
+- find more text

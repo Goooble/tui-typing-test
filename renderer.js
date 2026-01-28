@@ -92,15 +92,17 @@ function gameScreen(x, y) {
     //render each character
     for (let j = 0; j < textArray[i].length; j++) {
       cursorLocations.push([cursor.x, cursor.y]);
-      wstream.cursorTo(cursor.x, cursor.y);
-      wstream.write(textArray[i][j]);
+      frame += ansiCursor(cursor.x, cursor.y) + textArray[i][j];
+      // wstream.cursorTo(cursor.x, cursor.y);
+      // wstream.write(textArray[i][j]);
       cursor.x++;
       lineWidth++;
     }
     //render space
     cursorLocations.push([cursor.x, cursor.y]);
-    wstream.cursorTo(cursor.x, cursor.y);
-    wstream.write(" ");
+    frame += ansiCursor(cursor.x, cursor.y) + " ";
+    // wstream.cursorTo(cursor.x, cursor.y);
+    // wstream.write(" ");
     lineWidth++;
     cursor.x++;
   }
@@ -112,8 +114,10 @@ function gameScreen(x, y) {
   for (i = 0; i < game.getTextState().userDisplayText.length; i++) {
     cursor.x = cursorLocations[i][0];
     cursor.y = cursorLocations[i][1];
-    wstream.cursorTo(cursor.x, cursor.y);
-    wstream.write(game.getTextState().userDisplayText[i]);
+    frame +=
+      ansiCursor(cursor.x, cursor.y) + game.getTextState().userDisplayText[i];
+    // wstream.cursorTo(cursor.x, cursor.y);
+    // wstream.write(game.getTextState().userDisplayText[i]);
   }
   //to move cursor to the next line after the render
   if (cursorLocations[i][1] > cursor.y) {
@@ -138,10 +142,10 @@ function render() {
     startScreen(0, 1);
   } else if (game.getGameState().isGameOver === false) {
     statsScreen(0, 2, false);
-    //     gameScreen(0, 4);
+    gameScreen(0, 4);
   } else {
     statsScreen(0, 2, true);
-    //     gameScreen(0, 4);
+    gameScreen(0, 4);
     startScreen(0, lines + 2);
   }
   wstream.write(frame);
