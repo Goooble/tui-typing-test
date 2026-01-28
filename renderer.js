@@ -45,16 +45,22 @@ function ansiCursor(x, y) {
 function headerScreen(x, y) {
   x = horCenter(process.title.length);
   let string = process.title;
-  for (let i = 0; i < string.length; i++) {
+  let i;
+  for (i = 0; i < string.length; i++) {
     buffer[y][x + i] = `\x1b[1;4;36m${string[i]}\x1b[0m`;
   }
+  cursor.x = x + i;
+  cursor.y = y;
 }
 function startScreen(x, y) {
   let string = "Press Enter to start the test:";
   x = horCenter(string.length);
-  for (let i = 0; i < string.length; i++) {
+  let i;
+  for (i = 0; i < string.length; i++) {
     buffer[y][x + i] = `\x1b[5m${string[i]}\x1b[0m`;
   }
+  cursor.x = x + i + 1;
+  cursor.y = y;
 }
 
 function statsScreen(x, y, isGameOver) {
@@ -83,6 +89,10 @@ function statsScreen(x, y, isGameOver) {
   }
 }
 
+//I am moving around teh global cursor state here
+//which i should not be doing
+//its just legacy from when I wasnt using frames or buffers
+//I am too lazy to fix this so its just gonna be here since it works for now
 function gameScreen(x, y) {
   cursor.x = x;
   cursor.y = y;
@@ -115,7 +125,6 @@ function gameScreen(x, y) {
     lineWidth++;
     cursor.x++;
   }
-  wstream.cursorTo(x, y);
 
   //wrapping user entered text
   cursor.x = 0;
@@ -126,17 +135,8 @@ function gameScreen(x, y) {
     cursor.y = cursorLocations[i][1];
     buffer[cursor.y][cursor.x] = game.getTextState().userDisplayText[i];
   }
-  //to move cursor to the next line after the render
-  if (cursorLocations[i][1] > cursor.y) {
-    cursor.x = 0;
-    cursor.y++;
-  }
-  //to fix the tinial caret to the first character
-  let cursorx = cursor.x;
-  if (cursor.x != 0) {
-    cursorx++;
-  }
-  wstream.cursorTo(cursorx, cursor.y);
+  cursor.x = cursorLocations[i][0];
+  cursor.y = cursorLocations[i][1];
   lines = cursor.y;
 }
 let lines; //to dsiplay startscreen after all the testtext
@@ -175,14 +175,14 @@ function generateFrame() {
 }
 
 function render() {
-  wstream.write("\x1b[?25l");
-  // console.clear();
+  // wstream.write("\x1b[?25l");
   fillBuffer();
   bufferDiff();
   generateFrame();
   wstream.write(frame);
+  wstream.cursorTo(cursor.x, cursor.y);
   frame = "";
-  wstream.write("\x1b[?25h");
+  // wstream.write("\x1b[?25h");
 }
 
 export { rstream, wstream, render };

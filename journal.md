@@ -30,7 +30,8 @@ OH MY GOD, It was like solving a LeetCode problem damnit. So many bugs, so many 
 # Rendering
 
 Flickering, insane flickering. Because clearing and writing individually each character takes too much time and causes heavy flickering.
-Figured out you need to keep a frame/buffer and then write to it and then write the entire frame to the terminal. It reduced flickering by a lot, but theres more i can do i think. Differential rendering to the rescue, i will do grid based for the least flickering.
+Figured out you need to keep a frame/buffer and then write to it and then write the entire frame to the terminal. It reduced flickering by a lot, but theres more i can do i think. Differential rendering to the rescue, i will do grid based for the least flickering. OMG literally zero flickering after grid differential rendering. THIS IS SO GOOD
+I didnt know i could reduce flickering to zero!
 
 ## Side notes
 
